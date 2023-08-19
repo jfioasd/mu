@@ -84,7 +84,6 @@ def run_mu(code, stack):
             x = 0
             while True:
                 val = run_mu(g, tmp + [x])
-                print(val)
                 if val == [0]:
                     stack.append(x)
                     break
@@ -96,7 +95,6 @@ def run_mu(code, stack):
             stack[-1] += 1
 
         elif code[pc] == 'k':
-            print(stack)
             i, k = stack.pop(), stack.pop()
             tmp, stack = stack[-k:], stack[:-k]
             stack.append(tmp[i-1])
@@ -106,5 +104,6 @@ def run_mu(code, stack):
     return stack
 
 if __name__ == '__main__':
-    code = open(sys.argv[1]).read()
-    print(run_mu(code, []))
+    code = open(sys.argv[-1]).read()
+    stack = eval(input() or '[]')
+    print(run_mu(code, stack))
