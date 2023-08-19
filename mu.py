@@ -50,17 +50,43 @@ def run_mu(code, stack):
 
         elif code[pc] == 'P':
             g, h = f_stack[0], f_stack[1]
-            print(guess_arity(g))
-            exit(0)
+            f_stack = []
+
+            arity = guess_arity(g) + 1
+            tmp, stack = stack[-arity:], stack[:-arity]
+
+            n = tmp.pop()
+            for i in range(n-1, -1, -1):
+                stack += tmp + [i]
+
+            stack += tmp
+            stack = run_mu(g, stack)
+            
+            for i in range(n):
+                stack = run_mu(h, stack)
+
+        elif code[pc] == 'C':
+            arity = guess_arity(f_stack[0])
+            tmp, stack = stack[-arity:], stack[:-arity]
+
+            for i in f_stack[:-1]:
+                stack += run_mu(i, tmp)
+            
+            stack = run_mu(f_stack[-1], stack)
+
+            f_stack = []
 
         elif code[pc] == 'z':
             stack[-1] = 0
+
         elif code[pc] == 's':
             stack[-1] += 1
+
         elif code[pc] == 'k':
             i, k = stack.pop(), stack.pop()
             tmp, stack = stack[-k:], stack[:-k]
             stack.append(tmp[i-1])
+
         pc += 1
 
     return stack
