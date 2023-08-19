@@ -76,6 +76,19 @@ def run_mu(code, stack):
 
             f_stack = []
 
+        elif code[pc] == 'M':
+            arity = guess_arity(f_stack[0]) - 1
+            g = f_stack.pop()
+            tmp, stack = stack[-arity:], stack[:-arity]
+
+            x = 0
+            while True:
+                val = run_mu(g, tmp + [x])
+                print(val)
+                if val == [0]:
+                    stack.append(x)
+                    break
+
         elif code[pc] == 'z':
             stack[-1] = 0
 
@@ -83,6 +96,7 @@ def run_mu(code, stack):
             stack[-1] += 1
 
         elif code[pc] == 'k':
+            print(stack)
             i, k = stack.pop(), stack.pop()
             tmp, stack = stack[-k:], stack[:-k]
             stack.append(tmp[i-1])
