@@ -105,5 +105,8 @@ def run_mu(code, stack):
 
 if __name__ == '__main__':
     code = open(sys.argv[-1]).read()
-    stack = eval(input() or '[]')
+    try:
+        stack = eval(input() or '[]')
+    except EOFError:
+        stack = []
     print(run_mu(code, stack))
