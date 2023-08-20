@@ -20,7 +20,5 @@ def C(g, *h):
 
 def M(g):
     x = 0
-    while 1:
-        if g(x) == 0:
-            return x
-        x += 1
+    while g(x): x += 1
+    return x
